@@ -26,14 +26,14 @@ public class Filtering extends AppCompatActivity {
     RadioGroup rg;
     RadioButton rb;
     String rbValue;
+
     //fierbase***
     DatabaseReference database;
-    static List<Hospital> hospitalList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtering);
-
+        Ways_find_hospital.hospitalList.clear();
         //getMultyData();
         Button but = (Button) findViewById(R.id.next);
 
@@ -41,7 +41,6 @@ public class Filtering extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //array for hospital to categories it
-                hospitalList= new ArrayList<Hospital>();
                 //  get id of redio group
                 rg = (RadioGroup) findViewById(R.id.r_g);
                 //take vale from redio group and put it in radio button
@@ -94,15 +93,15 @@ public class Filtering extends AppCompatActivity {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
 
                     Hospital module = snapshot.getValue(Hospital.class);
-                    hospitalList.add(module) ;
+                    Ways_find_hospital.hospitalList.add(module) ;
                     Log.v("lll",module.getCategory());
                 }
                 //forloop for get data
-                for(int i=0;i<hospitalList.size();i++){
-                    String name=hospitalList.get(i).name;
+                for(int i=0;i<Ways_find_hospital.hospitalList.size();i++){
+                    String name=Ways_find_hospital.hospitalList.get(i).name;
                     Log.v("mariaxxx", name);
                 }
-                Integer size=Filtering.hospitalList.size();
+                Integer size=Ways_find_hospital.hospitalList.size();
                 String sb = size.toString();
                 Log.v("ixvi13",sb);
 

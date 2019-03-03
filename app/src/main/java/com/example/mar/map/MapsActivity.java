@@ -54,13 +54,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         position= new ArrayList<LatLng>();
 
-        Integer size=Filtering.hospitalList.size();
+        Integer size=Ways_find_hospital.hospitalList.size();
         String sb = size.toString();
         Log.v("ixvi12",sb);
 
         for(int i=0;i<size;i++) {
 
-            Hospital hospital= Filtering.hospitalList.get(i);
+            Hospital hospital= Ways_find_hospital.hospitalList.get(i);
             Log.v("dududu",hospital.name);
             double locationX , locationY;
             locationX=hospital.locationX;
@@ -71,7 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         for(int i=0;i<size;i++) {
-            Hospital hospital= Filtering.hospitalList.get(i);
+            Hospital hospital= Ways_find_hospital.hospitalList.get(i);
             Log.v("dududu2",hospital.name);
             mMap.addMarker(new MarkerOptions().position(position.get(i)).title(hospital.name));
         }
@@ -88,12 +88,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         TextView t = (TextView) view.findViewById(R.id.info_text2);
         TextView t2 = (TextView) view.findViewById(R.id.info_text4);
         ImageButton close = (ImageButton) view.findViewById(R.id.imageButton_close);
+        Button but_close = (Button) view.findViewById(R.id.close_button);
         Button but = (Button) view.findViewById(R.id.send_case);
 
         Hospital hospital = getHospital(marker);
 
+        String phoneNum;
+        if(hospital.phone>100000000){phoneNum="0"+hospital.phone;}
+        else{phoneNum="012"+hospital.phone;}
+
         t.setText(hospital.name);
-        t2.setText(hospital.phone+" ");
+        t2.setText(phoneNum+" ");
         w.setView(view);
         d= w.create();
         d.show();
@@ -107,34 +112,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MapsActivity.this,Filtering.class);
+                Intent i = new Intent(MapsActivity.this,Ways_find_hospital.class);
                 startActivity(i);
             }
         });
 
-
+        but_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                d.dismiss();
+            }
+        });
 
         return true;
     }
 
     //********
     public Hospital getHospital(Marker marker){
-         int size=Filtering.hospitalList.size();
+         int size=Ways_find_hospital.hospitalList.size();
          Hospital hospital = null;
         for(int i=0;i<size;i++){
             //hospital list
-            double x=Filtering.hospitalList.get(i).locationX;
-            double y=Filtering.hospitalList.get(i).locationY;
+            double x=Ways_find_hospital.hospitalList.get(i).locationX;
+            double y=Ways_find_hospital.hospitalList.get(i).locationY;
             //marker
             double x2=marker.getPosition().latitude;
             double y2=marker.getPosition().longitude;
 
             if(x==x2 && y==y2){
-                hospital = Filtering.hospitalList.get(i);
+                hospital = Ways_find_hospital.hospitalList.get(i);
             }
 
         }
 
         return hospital;
+    }
+    //***********
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i= new Intent(MapsActivity.this,Ways_find_hospital.class);
+        startActivity(i);
     }
 }
